@@ -1,0 +1,17 @@
+<div class="max-w-7xl m-auto py-4 flex justify-between items-center">
+    <p class="text-2xl font-semibold"><a href=" {{ path('app_home') }} ">Gettin'Fit</a></p>
+    <nav>
+        <ul class="flex items-center gap-8">
+            <li class="font-medium"><a href="">Lien</a></li>
+            <li class="font-medium"><a href="">Lien</a></li>
+            <li class="font-medium"><a href="">Lien</a></li>
+            <li class="font-medium"><a href="">Lien</a></li>
+
+            {% if app.user %}
+                <li class="font-medium"><a href=" {{ path('app_logout') }} ">Déconnexion</a></li>
+            {% else %}
+                <li class="font-medium"><a href=" {{ path('app_login') }} ">Connexion</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
