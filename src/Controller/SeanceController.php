@@ -11,6 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/seance')]
@@ -28,8 +29,9 @@ final class SeanceController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
     {
         $seance = new Seance();
-        
+        /** @var App\Entity\User[] $coaches */
         $coaches = $this->getCoaches($userRepository);
+        // dd($coaches);
 
         $form = $this->createForm(SeanceType::class, $seance, [
             'coaches' => $coaches

@@ -10,7 +10,9 @@
             <thead class="bg-blue-500 text-white">
                 <tr>
                     <th class="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">Id</th>
-                    <th class="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">Nom</th>
+                    <th class="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">Sportif</th>
+                    <th class="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">Coach</th>
+                    <th class="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">Programme</th>
                     <th class="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">Actions</th>
                 </tr>
             </thead>
@@ -18,7 +20,9 @@
                 {% for seance in seances %}
                     <tr class="hover:bg-gray-100 transition duration-300">
                         <td class="px-6 py-4 text-sm text-gray-700">{{ seance.id }}</td>
-                        {# <td class="px-6 py-4 text-sm text-gray-700">{{ seance.label }}</td> #}
+                        <td class="px-6 py-4 text-sm text-gray-700">{{ seance.getAdept.getName }}</td>
+                        <td class="px-6 py-4 text-sm text-gray-700">{{ seance.getCoach.getName }}</td>
+                        <td class="px-6 py-4 text-sm text-gray-700">{{ seance.program.getLabel }}</td>
                         <td class="px-6 py-4">
                             <a href="{{ path('app_seance_show', {'id': seance.id}) }}"
                             class="text-blue-500 hover:underline font-medium">

@@ -34,6 +34,7 @@ class UserType extends AbstractType
             ->add('program', EntityType::class, [
                 'class' => Program::class,
                 'choice_label' => 'label',
+                'required' => false
             ])
         ;
     }

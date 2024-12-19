@@ -15,6 +15,7 @@ class SeanceType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        /** @var App\Entity\User[] $coaches */
         $coaches = $options['coaches'];
         $builder
             ->add('adept', EntityType::class, [
@@ -27,6 +28,10 @@ class SeanceType extends AbstractType
             ])
             ->add('coach', ChoiceType::class, [
                 'choices' => $coaches,
+                'choice_value' => 'id',
+                'choice_label' => function (?User $user): string {
+                    return $user->getName();
+                },
                 'expanded' => false,
                 'multiple' => false,
                 'label' => 'Coach'
