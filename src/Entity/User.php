@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -29,6 +31,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'json')]
     private array $roles = [];
+
+    #[ORM\ManyToOne(inversedBy: 'users')]
+    private ?Program $program = null;
+
+    /**
+     * @var Collection<int, Seance>
+     */
+    #[ORM\OneToMany(targetEntity: Seance::class, mappedBy: 'adept')]
+    private Collection $seances;
+
+    /**
+     * @var Collection<int, Seance>
+     */
+    #[ORM\OneToMany(targetEntity: Seance::class, mappedBy: 'coach')]
+    private Collection $coachSeances;
+
+    public function __construct()
+    {
+        $this->seances = new ArrayCollection();
+        $this->coachSeances = new ArrayCollection();
+
+    }
 
     public function getId(): ?int
     {
@@ -86,9 +110,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getRoles(): array
     {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        $roles = count($this->roles) == 0 ? ['ROLE_USER'] : $this->roles;
 
         return array_unique($roles);
     }
@@ -107,5 +129,77 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getProgram(): ?Program
+    {
+        return $this->program;
+    }
+
+    public function setProgram(?Program $program): static
+    {
+        $this->program = $program;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Seance>
+     */
+    public function getSeances(): Collection
+    {
+        return $this->seances;
+    }
+
+    public function addSeance(Seance $seance): static
+    {
+        if (!$this->seances->contains($seance)) {
+            $this->seances->add($seance);
+            $seance->setAdept($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSeance(Seance $seance): static
+    {
+        if ($this->seances->removeElement($seance)) {
+            // set the owning side to null (unless already changed)
+            if ($seance->getAdept() === $this) {
+                $seance->setAdept(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Seance>
+     */
+    public function getCoachSeances(): Collection
+    {
+        return $this->coachSeances;
+    }
+
+    public function addCoachSeance(Seance $coachSeance): static
+    {
+        if (!$this->coachSeances->contains($coachSeance)) {
+            $this->coachSeances->add($coachSeance);
+            $coachSeance->setCoach($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCoachSeance(Seance $coachSeance): static
+    {
+        if ($this->coachSeances->removeElement($coachSeance)) {
+            // set the owning side to null (unless already changed)
+            if ($coachSeance->getCoach() === $this) {
+                $coachSeance->setCoach(null);
+            }
+        }
+
+        return $this;
     }
 }

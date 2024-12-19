@@ -1,0 +1,11 @@
+{% extends 'index.html.twig' %}
+
+{% block title %}Créer un programme{% endblock %}
+
+{% block main_content %}
+    <h1>Créer un nouveau programme</h1>
+
+    {{ include('program/_form.html.twig') }}
+
+    <a href="{{ path('app_program_index') }}">Retour à la liste des programmes</a>
+{% endblock %}

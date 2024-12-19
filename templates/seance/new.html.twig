@@ -1,0 +1,11 @@
+{% extends 'index.html.twig' %}
+
+{% block title %}Créer une séance{% endblock %}
+
+{% block main_content %}
+    <h1>Créer une séance</h1>
+
+    {{ include('seance/_form.html.twig') }}
+
+    <a href="{{ path('app_seance_index') }}">Retour à la liste des séances</a>
+{% endblock %}

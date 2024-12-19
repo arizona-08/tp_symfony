@@ -1,0 +1,45 @@
+<div class="max-w-4xl mx-auto mt-8">
+    <div class="bg-white shadow-lg rounded-lg">
+        <div class="bg-blue-500 text-white text-center py-4 rounded-t-lg">
+            <h2 class="text-xl font-bold">{{ title|default('Form') }}</h2>
+        </div>
+        <div class="p-6">
+            {{ form_start(form, { 'attr': { 'class': 'space-y-4' } }) }}
+
+            {# Display form errors at the top #}
+            {% if form.vars.errors|length > 0 %}
+                <div class="bg-red-100 text-red-600 border border-red-400 p-4 rounded mb-4">
+                    <ul class="list-disc list-inside">
+                        {% for error in form.vars.errors %}
+                            <li>{{ error.message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+
+            {# Render form fields with Tailwind styling #}
+            <div class="space-y-6">
+                {% for field in form %}
+                    {# Skip rendering hidden fields (like CSRF token) #}
+                    {% if field.vars.block_prefixes|last != 'hidden' %}
+                        <div>
+                            {{ form_label(field, null, { 'label_attr': { 'class': 'block text-gray-700 font-medium' } }) }}
+                            {{ form_widget(field, { 'attr': { 'class': 'mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500' } }) }}
+                            {{ form_errors(field) }}
+                        </div>
+                    {% else %}
+                        {{ form_widget(field) }}
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            <div class="mt-6">
+                <button class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition duration-300">
+                    {{ button_label|default('Save') }}
+                </button>
+            </div>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>

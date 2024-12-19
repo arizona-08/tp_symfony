@@ -1,0 +1,43 @@
+{% extends 'index.html.twig' %}
+
+{% block title %}Exercice index{% endblock %}
+
+{% block main_content %}
+    <h1>Exercice index</h1>
+
+    <div class="overflow-x-auto mt-8">
+        <table class="min-w-full bg-white shadow-lg rounded-lg">
+            <thead class="bg-blue-500 text-white">
+                <tr>
+                    <th class="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">Id</th>
+                    <th class="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">Nom</th>
+                    <th class="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+                {% for exercice in exercices %}
+                    <tr class="hover:bg-gray-100 transition duration-300">
+                        <td class="px-6 py-4 text-sm text-gray-700">{{ exercice.id }}</td>
+                        <td class="px-6 py-4 text-sm text-gray-700">{{ exercice.label }}</td>
+                        <td class="px-6 py-4">
+                            <a href="{{ path('app_exercice_show', {'id': exercice.id}) }}"
+                            class="text-blue-500 hover:underline font-medium">
+                            Détails
+                            </a>
+                            <a href="{{ path('app_exercice_edit', {'id': exercice.id}) }}"
+                            class="text-green-500 hover:underline font-medium ml-4">
+                            Modifier
+                            </a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="3" class="px-6 py-4 text-center text-sm text-gray-500">Aucun exercices trouvés</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <a href="{{ path('app_exercice_new') }}">Ajouter un nouvel exercice</a>
+{% endblock %}

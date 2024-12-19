@@ -1,0 +1,44 @@
+{% extends 'index.html.twig' %}
+
+{% block title %}Program index{% endblock %}
+
+{% block main_content %}
+    <h1>Program index</h1>
+
+    <div class="overflow-x-auto mt-8">
+        <table class="min-w-full bg-white shadow-lg rounded-lg">
+            <thead class="bg-blue-500 text-white">
+                <tr>
+                    <th class="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">Id</th>
+                    <th class="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">Nom</th>
+                    <th class="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+                {% for program in programs %}
+                    <tr class="hover:bg-gray-100 transition duration-300">
+                        <td class="px-6 py-4 text-sm text-gray-700">{{ program.id }}</td>
+                        <td class="px-6 py-4 text-sm text-gray-700">{{ program.label }}</td>
+                        <td class="px-6 py-4">
+                            <a href="{{ path('app_program_show', {'id': program.id}) }}"
+                            class="text-blue-500 hover:underline font-medium">
+                            Détails
+                            </a>
+                            <a href="{{ path('app_program_edit', {'id': program.id}) }}"
+                            class="text-green-500 hover:underline font-medium ml-4">
+                            Modifier
+                            </a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="3" class="px-6 py-4 text-center text-sm text-gray-500">Aucun programmes trouvé</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+    <a href="{{ path('app_program_new') }}">Ajouter un programme</a>
+{% endblock %}

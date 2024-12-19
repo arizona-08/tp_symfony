@@ -16,6 +16,15 @@ class UserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
+    public function findUsersWithRoleCoach(): array
+    {
+        $qb = $this->createQueryBuilder('u')
+            ->where("u.roles @> :role")
+            ->setParameter('role', '["ROLE_COACH"]');
+
+        return $qb->getQuery()->getResult();
+    }
+
     //    /**
     //     * @return User[] Returns an array of User objects
     //     */

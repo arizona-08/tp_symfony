@@ -1,0 +1,75 @@
+{% extends 'index.html.twig' %}
+
+{% block title %}Program{% endblock %}
+
+{% block main_content %}
+    <h1>{{ program.label }}</h1>
+
+    <div class="max-w-2xl mx-auto mt-8 mb-5">
+        <table class="min-w-full bg-white shadow-lg rounded-lg">
+            <tbody class="divide-y divide-gray-200">
+                <tr class="bg-gray-50">
+                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 uppercase tracking-wider">
+                        Id
+                    </th>
+                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 uppercase tracking-wider">
+                        Label
+                    </th>
+                    
+                </tr>
+                <tr>
+                    <td class="px-6 py-3 text-sm text-gray-900">
+                        {{ program.id }}
+                    </td>
+                    <td class="px-6 py-3 text-sm text-gray-900">
+                        {{ program.label }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h2 class="text-xl font-semibold mb-3">Liste des exercices</h2>
+    <div class="max-w-2xl mx-auto mt-8 mb-5">
+        <table class="min-w-full bg-white shadow-lg rounded-lg">
+            <tbody class="divide-y divide-gray-200">
+                <tr class="bg-gray-50">
+                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 uppercase tracking-wider">
+                        Id
+                    </th>
+                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 uppercase tracking-wider">
+                        Nom
+                    </th>
+                    
+                </tr>
+                {% if program.getExercices %}
+                    {% for exercice in program.getExercices %}
+                        <tr>
+                            <td class="px-6 py-3 text-sm text-gray-900">
+                                {{ exercice.id }}
+                            </td>
+                            <td class="px-6 py-3 text-sm text-gray-900">
+                                {{ exercice.label }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="3" class="px-6 py-4 text-center text-sm text-gray-500">Le programme ne contient pas d'exercices</td>
+                    </tr>
+                {% endif %}
+                
+                
+            </tbody>
+        </table>
+    </div>
+
+    <div class="flex items-center gap-4 mb-5">
+        <a href="{{ path('app_program_index') }}" class="inline-block px-4 py-2 bg-blue-500 rounded text-white">Retour vers la liste des programmes</a>
+
+        <a href="{{ path('app_program_edit', {'id': program.id}) }}" class="inline-block px-4 py-2 bg-green-500 rounded text-white">Modifier</a>
+    </div>
+    
+
+    {{ include('program/_delete_form.html.twig') }}
+{% endblock %}
