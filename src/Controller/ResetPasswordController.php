@@ -134,7 +134,9 @@ class ResetPasswordController extends AbstractController
 
         // Do not reveal whether a user account was found or not.
         if (!$user) {
-            return $this->redirectToRoute('app_check_email');
+            // return $this->redirectToRoute('app_check_email');
+            throw new \Error('User not found');
+            die();
         }
 
         try {
@@ -155,8 +157,8 @@ class ResetPasswordController extends AbstractController
 
         $email = (new TemplatedEmail())
             ->from(new Address('teamGettingFit@test.com', "Getting'Fit"))
-            // ->to((string) $user->getEmail())
-            ->to('test@example.com')
+            ->to((string) $user->getEmail())
+            // ->to('test@example.com')
             ->subject('Your password reset request')
             ->htmlTemplate('reset_password/email.html.twig')
             ->context([
