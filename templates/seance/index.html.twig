@@ -28,10 +28,13 @@
                             class="text-blue-500 hover:underline font-medium">
                             Détails
                             </a>
-                            <a href="{{ path('app_seance_edit', {'id': seance.id}) }}"
-                            class="text-green-500 hover:underline font-medium ml-4">
-                            Modifier
-                            </a>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <a href="{{ path('app_seance_edit', {'id': seance.id}) }}"
+                                class="text-green-500 hover:underline font-medium ml-4">
+                                Modifier
+                                </a>
+                            {% endif %}
+                            
                         </td>
                     </tr>
                 {% else %}

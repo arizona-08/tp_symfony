@@ -1,5 +1,6 @@
 services:
   php:
+    container_name: web_app
     image: ${IMAGES_PREFIX:-}app-php
     restart: unless-stopped
     environment:
@@ -38,6 +39,7 @@ services:
 
 ###> doctrine/doctrine-bundle ###
   database:
+    container_name: database_app
     image: postgres:16-alpine
     environment:
       POSTGRES_DB: ${POSTGRES_DB}

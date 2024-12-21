@@ -133,13 +133,20 @@ final class SeanceController extends AbstractController
     #[Route('/{id}/validate', name: 'app_seance_validate', methods: ['POST'])]
     public function validate(Request $request, Seance $seance, EntityManagerInterface $entityManager): Response
     {
+        /** @var \App\Entity\User $user */
+        $user = $this->getUser();
         if ($this->isCsrfTokenValid('validate'.$seance->getId(), $request->getPayload()->getString('_token'))) {
             // dd($request);
             $seance->setValidated(true);
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_seance_show', ['id' => $seance->getId()], Response::HTTP_SEE_OTHER);
+        if($user->getUniqueRole() == 'ROLE_ADMIN'){
+            return $this->redirectToRoute('app_seance_show', ['id' => $seance->getId()], Response::HTTP_SEE_OTHER);
+        } else {
+            return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
+        }
+        
     }
 
     public function getCoaches(UserRepository $userRepository){

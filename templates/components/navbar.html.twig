@@ -2,6 +2,7 @@
     <p class="text-2xl font-semibold"><a href=" {{ path('app_home') }} ">Gettin'Fit</a></p>
     <nav>
         <ul class="flex items-center gap-8">
+            <li class="font-medium"><a href=" {{ path('app_home') }} ">Accueil</a></li>
             {% if is_granted('ROLE_ADMIN') %}
                 <li class="font-medium"><a href=" {{ path('app_admin') }} ">Admin</a></li>
             {% endif %}

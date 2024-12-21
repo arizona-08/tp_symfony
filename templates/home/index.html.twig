@@ -20,8 +20,12 @@
         {% if user.getUniqueRole == 'ROLE_ADMIN' %}
             {% include "role_pages/home_admin.html.twig" %}
         {% endif %}
-        {% if user.getUniqueRole == 'ROLE_USER' or user.getUniqueRole == 'ROLE_COACH' %}
+        {% if user.getUniqueRole == 'ROLE_USER' %}
             {% include "role_pages/home_user.html.twig" %}
+        {% endif %}
+
+        {% if user.getUniqueRole == 'ROLE_COACH' %}
+            {% include "role_pages/home_coach.html.twig" %}
         {% endif %}
     {% endif %}
 
