@@ -5,7 +5,7 @@
 {% block main_content %}
     <h1 class="text-2xl">Seance</h1>
 
-     <div class="max-w-2xl mx-auto mt-8 mb-5">
+     <div class="max-w-7xl mx-auto mt-8 mb-5">
         <table class="min-w-full bg-white shadow-lg rounded-lg">
             <tbody class="divide-y divide-gray-200">
                 <tr class="bg-gray-50">
@@ -20,6 +20,9 @@
                     </th>
                     <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 uppercase tracking-wider">
                         Date de la séance
+                    </th>
+                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 uppercase tracking-wider">
+                        Programme
                     </th>
                     <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 uppercase tracking-wider">
                         Exercices
@@ -41,6 +44,9 @@
                     </td>
                     <td class="px-6 py-3 text-sm text-gray-900">
                         {{ seance.seanceDate|date('d/m/y') }}
+                    </td>
+                    <td class="px-6 py-3 text-sm text-gray-900">
+                        {{ seance.adept.program.label }}
                     </td>
                     <td class="px-6 py-3 text-sm text-gray-900">
                         <ul>

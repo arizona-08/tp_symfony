@@ -5,22 +5,26 @@
 {% block main_content %}
 
 <div class="">
-    <h1 class="text-3xl font-bold">Bienvenue {{ user != null ? ', ' ~ user.getName : '' }}</h1>
     
-    {% if is_granted('ROLE_USER') %}
-        <h2>Mon programme: {{user.getProgram.getLabel}} </h2>
-
-        <h2>Mes prochaines séances:</h2>
+    {% if user == null %}
+        <h1 class="text-3xl font-bold mb-12">Bienvenue {{ user != null ? ', ' ~ user.getName : '' }}</h1>
         <div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Coach</th>
-                        <th>Exercices</th>
-                    </tr>
-                </thead>
-            </table>
+            <a href=" {{ path('app_login') }} ">Me connecter</a>
+            <a href=" {{ path('app_register') }} ">M'inscrire</a>
         </div>
     {% endif %}
+
+    {% if user %}
+        <h1 class="text-3xl font-bold mb-12">Bienvenue {{user.getName}}</h1>
+
+        {% if user.getUniqueRole == 'ROLE_ADMIN' %}
+            {% include "role_pages/home_admin.html.twig" %}
+        {% endif %}
+        {% if user.getUniqueRole == 'ROLE_USER' or user.getUniqueRole == 'ROLE_COACH' %}
+            {% include "role_pages/home_user.html.twig" %}
+        {% endif %}
+    {% endif %}
+
+    
 </div>
 {% endblock %}

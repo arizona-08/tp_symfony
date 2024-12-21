@@ -8,4 +8,12 @@
     {{ include('seance/_form.html.twig') }}
 
     <a href="{{ path('app_seance_index') }}">Retour à la liste des séances</a>
+    <script>
+        const selectClient = document.getElementById('seance_client');
+
+        selectClient.onchange = () => {
+            const selectedValue = selectClient.value;
+            window.location.href = "{{ path('app_seance_new') }}" + "?client=" + selectedValue;
+        }
+    </script>
 {% endblock %}

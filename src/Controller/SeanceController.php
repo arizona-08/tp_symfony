@@ -30,21 +30,39 @@ final class SeanceController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository, ExerciceRepository $exerciceRepository): Response
     {
         $seance = new Seance();
+
         /** @var App\Entity\User[] $coaches */
         $coaches = $this->getCoaches($userRepository);
-        // dd($coaches);
+        
+        $clients = $this->getClients($userRepository);
 
         /** @var App\Entity\Exercice[] $exercices */
-        $exercices = $exerciceRepository->findAll();
+        $exercices = $clients[0]->getProgram()->getExercices();
     
+        $client = null;
+        $queryClientId = $request->query->get('client');
+        if($queryClientId){
+
+            /** @var App\Entity\User|null $selectedClient */
+            $client = $userRepository->find($queryClientId);
+            $exercices = $client->getProgram()->getExercices();
+            if (!$client) {
+                throw $this->createNotFoundException('Client not found');
+            }
+            // dd($client);
+        }
+        
         $form = $this->createForm(SeanceType::class, $seance, [
+            'clients' => $clients,
             'coaches' => $coaches,
-            'exercices' => $exercices
+            'exercices' => $exercices,
+            'selected_client' => $client,
         ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             // dd($request);
+            $seance->setAdept($userRepository->find($request->get('seance')['client']));
             foreach ($request->get('seance')['exercices'] as $exercice_id) {
                 $seance->addExercice($exerciceRepository->find($exercice_id));
             }
@@ -73,10 +91,12 @@ final class SeanceController extends AbstractController
     public function edit(Request $request, Seance $seance, EntityManagerInterface $entityManager, UserRepository $userRepository, ExerciceRepository $exerciceRepository): Response
     {
         $coaches = $this->getCoaches($userRepository);
+        $clients = $this->getClients($userRepository);
 
         /** @var App\Entity\Exercice[] $exercices */
         $exercices = $exerciceRepository->findAll();
         $form = $this->createForm(SeanceType::class, $seance, [
+            'clients' => $clients,
             'coaches' => $coaches,
             'exercices' => $exercices
         ]);
@@ -84,6 +104,7 @@ final class SeanceController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             // dd($request);
+            $seance->setAdept($userRepository->find($request->get('seance')['client']));
             foreach ($request->get('seance')['exercices'] as $exercice_id) {
                 $seance->addExercice($exerciceRepository->find($exercice_id));
             }
@@ -133,5 +154,19 @@ final class SeanceController extends AbstractController
         }
 
         return $coaches;
+    }
+
+    public function getClients(UserRepository $userRepository){
+        $users = $userRepository->findAll();
+
+        $clients = [];
+
+        foreach ($users as $key => $user) {
+            if(in_array('ROLE_USER', $user->getRoles())){
+                $clients[] = $user;
+            }
+        }
+
+        return $clients;
     }
 }

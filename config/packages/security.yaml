@@ -42,7 +42,7 @@ security:
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/program, roles: [ROLE_ADMIN, ROLE_USER, ROLE_COACH] }
         - { path: ^/exercice, roles: [ROLE_ADMIN, ROLE_USER, ROLE_COACH] }
-        - { path: ^/seance, roles: [ROLE_ADMIN, ROLE_USER, ROLE_COACH] }
+        - { path: ^/seance, roles: [ROLE_ADMIN, ROLE_COACH] }
 
 when@test:
     security:

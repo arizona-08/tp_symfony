@@ -1,0 +1,41 @@
+<h2>Mon programme: {{user.getProgram.getLabel}} </h2>
+
+<h2>Mes prochaines séances:</h2>
+<div class="overflow-x-auto mt-8">
+    <table class="min-w-full bg-white shadow-lg rounded-lg">
+        <thead class="bg-blue-500 text-white">
+            <tr>
+                <th class="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">Coach</th>
+                <th class="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">Date</th>
+                <th class="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">Exercices</th>
+                <th class="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">Validé</th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200">
+            {% for seance in user.seances %}
+                <tr class="hover:bg-gray-100 transition duration-300">
+                    <td class="px-6 py-4 text-sm text-gray-700">{{ seance.getCoach.getName }}</td>
+                    <td class="px-6 py-4 text-sm text-gray-700">{{ seance.seanceDate|date('d/m/y') }}</td>
+                    <td class="px-6 py-4">
+                        <ul>
+                            {% for exercice in seance.exercices %}
+                                <li> {{ exercice.label }} </li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                    {% if seance.validated %}
+                        <td class="px-6 py-4 text-sm text-green-700">Validé</td>
+                    {% else %}
+                        <td class="px-6 py-4 text-sm text-red-700">Pas validé</td>
+                    {% endif %}
+                    
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3" class="px-6 py-4 text-center text-sm text-gray-500">Aucune séances trouvées</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+       

@@ -20,9 +20,6 @@ class Seance
     #[ORM\JoinColumn(nullable: false)]
     private ?User $adept = null;
 
-    #[ORM\ManyToOne(inversedBy: 'seances')]
-    private ?Program $program = null;
-
     #[ORM\ManyToOne(inversedBy: 'coachSeances')]
     private ?User $coach = null;
 
@@ -60,17 +57,6 @@ class Seance
         return $this;
     }
 
-    public function getProgram(): ?Program
-    {
-        return $this->program;
-    }
-
-    public function setProgram(?Program $program): static
-    {
-        $this->program = $program;
-
-        return $this;
-    }
 
     public function getCoach(): ?User
     {

@@ -20,19 +20,27 @@ class SeanceType extends AbstractType
         /** @var App\Entity\User[] $coaches */
         $coaches = $options['coaches'];
 
+        /** @var App\Entity\User[] $coaches */
+        $clients = $options['clients'];
+
+        /** @var App\Entity\User|null $selectedClient */
+        $selectedClient = $options['selected_client'];
+
         /** @var App\Entity\Exercice[] $exercices */
         $exercices = $options['exercices'];
-
+        // dd($selectedClient);
+        
         $builder
-            ->add('adept', EntityType::class, [
-                'class' => User::class,
-                'choice_label' => 'name',
-                'label' => 'Client'
-            ])
-            ->add('program', EntityType::class, [
-                'class' => Program::class,
-                'choice_label' => 'label',
-                'label' => 'Programme'
+            ->add('client', ChoiceType::class, [
+                'choices' => $clients,
+                'choice_value' => 'id',
+                'choice_label' => function (?User $user): string {
+                    return $user->getName();
+                },
+                'multiple' => false,
+                'label' => 'Client',
+                'mapped' => false,
+                'data' => $selectedClient ?? $clients[0]
             ])
             ->add('exercices', ChoiceType::class, [
                 'choices' => $exercices,
@@ -66,8 +74,10 @@ class SeanceType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Seance::class,
+            'clients' => [],
             'coaches' => [],
-            'exercices' => []
+            'exercices' => [],
+            'selected_client' => null
         ]);
     }
 }

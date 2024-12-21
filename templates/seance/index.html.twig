@@ -22,7 +22,7 @@
                         <td class="px-6 py-4 text-sm text-gray-700">{{ seance.id }}</td>
                         <td class="px-6 py-4 text-sm text-gray-700">{{ seance.getAdept.getName }}</td>
                         <td class="px-6 py-4 text-sm text-gray-700">{{ seance.getCoach.getName }}</td>
-                        <td class="px-6 py-4 text-sm text-gray-700">{{ seance.program.getLabel }}</td>
+                        <td class="px-6 py-4 text-sm text-gray-700">{{ seance.adept.program.getLabel }}</td>
                         <td class="px-6 py-4">
                             <a href="{{ path('app_seance_show', {'id': seance.id}) }}"
                             class="text-blue-500 hover:underline font-medium">

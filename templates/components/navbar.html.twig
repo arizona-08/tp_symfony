@@ -5,12 +5,14 @@
             {% if is_granted('ROLE_ADMIN') %}
                 <li class="font-medium"><a href=" {{ path('app_admin') }} ">Admin</a></li>
             {% endif %}
+            
             {% if is_granted('ROLE_COACH') %}
                 <li class="font-medium"><a href=" {{ path('app_program_index') }} ">Programmes</a></li>
+                <li class="font-medium"><a href="  {{ path('app_seance_index') }}">Seance</a></li>
             {% endif %}
             
             <li class="font-medium"><a href=" {{ path('app_exercice_index') }} ">Exercices</a></li>
-            <li class="font-medium"><a href="  {{ path('app_seance_index') }}">Seance</a></li>
+            
 
             {% if app.user %}
                 <li class="font-medium"><a href=" {{ path('app_logout') }} ">Déconnexion</a></li>

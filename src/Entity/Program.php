@@ -30,17 +30,10 @@ class Program
     #[ORM\ManyToMany(targetEntity: Exercice::class, inversedBy: 'programs')]
     private Collection $exercices;
 
-    /**
-     * @var Collection<int, Seance>
-     */
-    #[ORM\OneToMany(targetEntity: Seance::class, mappedBy: 'program')]
-    private Collection $seances;
-
     public function __construct()
     {
         $this->users = new ArrayCollection();
         $this->exercices = new ArrayCollection();
-        $this->seances = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -110,36 +103,6 @@ class Program
     public function removeExercice(Exercice $exercice): static
     {
         $this->exercices->removeElement($exercice);
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Seance>
-     */
-    public function getSeances(): Collection
-    {
-        return $this->seances;
-    }
-
-    public function addSeance(Seance $seance): static
-    {
-        if (!$this->seances->contains($seance)) {
-            $this->seances->add($seance);
-            $seance->setProgram($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSeance(Seance $seance): static
-    {
-        if ($this->seances->removeElement($seance)) {
-            // set the owning side to null (unless already changed)
-            if ($seance->getProgram() === $this) {
-                $seance->setProgram(null);
-            }
-        }
 
         return $this;
     }
