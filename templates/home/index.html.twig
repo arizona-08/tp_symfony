@@ -27,6 +27,10 @@
         {% if user.getUniqueRole == 'ROLE_COACH' %}
             {% include "role_pages/home_coach.html.twig" %}
         {% endif %}
+
+        {% if user.getUniqueRole == 'ROLE_BANNED'%}
+            <h2 class="text-7xl">VOUS ÊTES BANNIS!</h2>
+        {% endif %}
     {% endif %}
 
     
