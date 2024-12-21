@@ -1,22 +1,71 @@
-{% extends 'base.html.twig' %}
+{% extends 'index.html.twig' %}
 
 {% block title %}Seance{% endblock %}
 
-{% block body %}
-    <h1>Seance</h1>
+{% block main_content %}
+    <h1 class="text-2xl">Seance</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ seance.id }}</td>
-            </tr>
-        </tbody>
-    </table>
+     <div class="max-w-2xl mx-auto mt-8 mb-5">
+        <table class="min-w-full bg-white shadow-lg rounded-lg">
+            <tbody class="divide-y divide-gray-200">
+                <tr class="bg-gray-50">
+                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 uppercase tracking-wider">
+                        Id
+                    </th>
+                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 uppercase tracking-wider">
+                        Client
+                    </th>
+                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 uppercase tracking-wider">
+                        Coach
+                    </th>
+                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 uppercase tracking-wider">
+                        Date de la séance
+                    </th>
+                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 uppercase tracking-wider">
+                        Exercices
+                    </th>
+                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 uppercase tracking-wider">
+                        Validé
+                    </th>
+                    
+                </tr>
+                <tr>
+                    <td class="px-6 py-3 text-sm text-gray-900">
+                        {{ seance.id }}
+                    </td>
+                    <td class="px-6 py-3 text-sm text-gray-900">
+                        {{ seance.adept.name }}
+                    </td>
+                    <td class="px-6 py-3 text-sm text-gray-900">
+                        {{ seance.coach.name }}
+                    </td>
+                    <td class="px-6 py-3 text-sm text-gray-900">
+                        {{ seance.seanceDate|date('d/m/y') }}
+                    </td>
+                    <td class="px-6 py-3 text-sm text-gray-900">
+                        <ul>
+                            {% for exercice in  seance.exercices %}
+                                <li> {{exercice.label}} </li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                    <td class="px-6 py-3 text-sm text-gray-900">
+                        {% if seance.isValidated == true %}
+                            <p class="text-green-500">Validé</p>
+                        {% else %}
+                            {% include "seance/_validate_form.html.twig" %}
+                        {% endif %}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
-    <a href="{{ path('app_seance_index') }}">back to list</a>
+    <div class="flex items-center gap-4 mb-5">
+        <a href="{{ path('app_seance_index') }}" class="inline-block px-4 py-2 bg-blue-500 rounded text-white">Retour vers la liste des seances</a>
 
-    <a href="{{ path('app_seance_edit', {'id': seance.id}) }}">edit</a>
+        <a href="{{ path('app_seance_edit', {'id': seance.id}) }}" class="inline-block px-4 py-2 bg-green-500 rounded text-white">Modifier</a>
+    </div>
 
     {{ include('seance/_delete_form.html.twig') }}
 {% endblock %}

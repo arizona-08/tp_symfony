@@ -1,0 +1,4 @@
+<form method="post" action="{{ path('app_seance_validate', {'id': seance.id}) }}">
+    <input type="hidden" name="_token" value="{{ csrf_token('validate' ~ seance.id) }}">
+    <button class="px-4 py-2 rounded bg-green-500 text-white">Valider</button>
+</form>

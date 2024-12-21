@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Seance;
 use App\Form\SeanceType;
+use App\Repository\ExerciceRepository;
 use App\Repository\ProgramRepository;
 use App\Repository\SeanceRepository;
 use App\Repository\UserRepository;
@@ -26,19 +27,28 @@ final class SeanceController extends AbstractController
     }
 
     #[Route('/new', name: 'app_seance_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository, ExerciceRepository $exerciceRepository): Response
     {
         $seance = new Seance();
         /** @var App\Entity\User[] $coaches */
         $coaches = $this->getCoaches($userRepository);
         // dd($coaches);
 
+        /** @var App\Entity\Exercice[] $exercices */
+        $exercices = $exerciceRepository->findAll();
+    
         $form = $this->createForm(SeanceType::class, $seance, [
-            'coaches' => $coaches
+            'coaches' => $coaches,
+            'exercices' => $exercices
         ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // dd($request);
+            foreach ($request->get('seance')['exercices'] as $exercice_id) {
+                $seance->addExercice($exerciceRepository->find($exercice_id));
+            }
+            
             $entityManager->persist($seance);
             $entityManager->flush();
 
@@ -60,15 +70,23 @@ final class SeanceController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_seance_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Seance $seance, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
+    public function edit(Request $request, Seance $seance, EntityManagerInterface $entityManager, UserRepository $userRepository, ExerciceRepository $exerciceRepository): Response
     {
         $coaches = $this->getCoaches($userRepository);
+
+        /** @var App\Entity\Exercice[] $exercices */
+        $exercices = $exerciceRepository->findAll();
         $form = $this->createForm(SeanceType::class, $seance, [
-            'coaches' => $coaches
+            'coaches' => $coaches,
+            'exercices' => $exercices
         ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // dd($request);
+            foreach ($request->get('seance')['exercices'] as $exercice_id) {
+                $seance->addExercice($exerciceRepository->find($exercice_id));
+            }
             $entityManager->flush();
 
             return $this->redirectToRoute('app_seance_index', [], Response::HTTP_SEE_OTHER);
@@ -89,6 +107,18 @@ final class SeanceController extends AbstractController
         }
 
         return $this->redirectToRoute('app_seance_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/{id}/validate', name: 'app_seance_validate', methods: ['POST'])]
+    public function validate(Request $request, Seance $seance, EntityManagerInterface $entityManager): Response
+    {
+        if ($this->isCsrfTokenValid('validate'.$seance->getId(), $request->getPayload()->getString('_token'))) {
+            // dd($request);
+            $seance->setValidated(true);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('app_seance_show', ['id' => $seance->getId()], Response::HTTP_SEE_OTHER);
     }
 
     public function getCoaches(UserRepository $userRepository){

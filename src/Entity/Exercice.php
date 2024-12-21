@@ -24,9 +24,16 @@ class Exercice
     #[ORM\ManyToMany(targetEntity: Program::class, mappedBy: 'exercices')]
     private Collection $programs;
 
+    /**
+     * @var Collection<int, Seance>
+     */
+    #[ORM\ManyToMany(targetEntity: Seance::class, mappedBy: 'exercices')]
+    private Collection $seances;
+
     public function __construct()
     {
         $this->programs = new ArrayCollection();
+        $this->seances = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -68,6 +75,33 @@ class Exercice
     {
         if ($this->programs->removeElement($program)) {
             $program->removeExercice($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Seance>
+     */
+    public function getSeances(): Collection
+    {
+        return $this->seances;
+    }
+
+    public function addSeance(Seance $seance): static
+    {
+        if (!$this->seances->contains($seance)) {
+            $this->seances->add($seance);
+            $seance->addExercice($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSeance(Seance $seance): static
+    {
+        if ($this->seances->removeElement($seance)) {
+            $seance->removeExercice($this);
         }
 
         return $this;

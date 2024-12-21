@@ -2,8 +2,13 @@
     <p class="text-2xl font-semibold"><a href=" {{ path('app_home') }} ">Gettin'Fit</a></p>
     <nav>
         <ul class="flex items-center gap-8">
-            <li class="font-medium"><a href=" {{ path('app_admin') }} ">Admin</a></li>
-            <li class="font-medium"><a href=" {{ path('app_program_index') }} ">Programmes</a></li>
+            {% if is_granted('ROLE_ADMIN') %}
+                <li class="font-medium"><a href=" {{ path('app_admin') }} ">Admin</a></li>
+            {% endif %}
+            {% if is_granted('ROLE_COACH') %}
+                <li class="font-medium"><a href=" {{ path('app_program_index') }} ">Programmes</a></li>
+            {% endif %}
+            
             <li class="font-medium"><a href=" {{ path('app_exercice_index') }} ">Exercices</a></li>
             <li class="font-medium"><a href="  {{ path('app_seance_index') }}">Seance</a></li>
 
