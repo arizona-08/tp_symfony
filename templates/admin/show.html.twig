@@ -16,6 +16,9 @@
                         Nom
                     </th>
                     <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 uppercase tracking-wider">
+                        Email
+                    </th>
+                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 uppercase tracking-wider">
                         Role
                     </th>
                 </tr>
@@ -25,6 +28,9 @@
                     </td>
                     <td class="px-6 py-3 text-sm text-gray-900">
                         {{ user.getName }}
+                    </td>
+                    <td class="px-6 py-3 text-sm text-gray-900">
+                        {{ user.email }}
                     </td>
                     <td class="px-6 py-3 text-sm text-gray-900">
                         {% for role in user.getRoles %}

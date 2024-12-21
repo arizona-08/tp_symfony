@@ -1,4 +1,10 @@
-<h2>Mon programme: {{user.getProgram.getLabel}} </h2>
+
+{% if user.getUniqueRole == 'ROLE_USER' %}
+    <h2>Mon programme: {{user.getProgram.getLabel}} </h2>
+{% else %}
+    <h2>Mes séances</h2>
+{% endif %}
+
 
 <h2>Mes prochaines séances:</h2>
 <div class="overflow-x-auto mt-8">
@@ -26,7 +32,13 @@
                     {% if seance.validated %}
                         <td class="px-6 py-4 text-sm text-green-700">Validé</td>
                     {% else %}
-                        <td class="px-6 py-4 text-sm text-red-700">Pas validé</td>
+                        {% if user.getUniqueRole == 'ROLE_COACH' %}
+                            {% include "seance/_validate_form.html.twig" %}
+
+                        {% else %}
+                            <td class="px-6 py-4 text-sm text-red-700">Pas validé</td>
+                        {% endif %}
+                        
                     {% endif %}
                     
                 </tr>
